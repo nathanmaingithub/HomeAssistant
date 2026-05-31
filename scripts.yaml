@@ -1,0 +1,104 @@
+myair_day_profile:
+  alias: "MyAir - Day Profile"
+  icon: mdi:white-balance-sunny
+  sequence:
+    - action: climate.set_hvac_mode
+      target:
+        entity_id: climate.ac
+      data:
+        hvac_mode: heat_cool
+    - action: climate.set_temperature
+      target:
+        entity_id: climate.ac
+      data:
+        target_temp_low: 21
+        target_temp_high: 23
+    - action: select.select_option
+      target:
+        entity_id: select.ac_myzone
+      data:
+        option: "Down Living"
+    - action: climate.turn_on
+      target:
+        entity_id:
+          - climate.ac_master_ens
+          - climate.ac_sasha
+          - climate.ac_elise
+          - climate.ac_hugo
+          - climate.ac_rumpus
+          - climate.ac_down_living
+          - climate.ac_study
+          - climate.ac_cinema
+
+myair_afternoon_cooling_profile:
+  alias: "MyAir - Afternoon Cooling Profile"
+  icon: mdi:snowflake
+  sequence:
+    - action: climate.set_temperature
+      target:
+        entity_id: climate.ac
+      data:
+        target_temp_low: 21
+        target_temp_high: 22
+    - action: select.select_option
+      target:
+        entity_id: select.ac_myzone
+      data:
+        option: "Master + Ens"
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.ac_master_ens
+          - climate.ac_sasha
+          - climate.ac_elise
+          - climate.ac_hugo
+          - climate.ac_rumpus
+      data:
+        temperature: 22
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.ac_down_living
+          - climate.ac_study
+          - climate.ac_cinema
+      data:
+        temperature: 24
+
+myair_night_profile:
+  alias: "MyAir - Night Profile"
+  icon: mdi:weather-night
+  sequence:
+    - action: climate.set_hvac_mode
+      target:
+        entity_id: climate.ac
+      data:
+        hvac_mode: heat_cool
+    - action: climate.set_temperature
+      target:
+        entity_id: climate.ac
+      data:
+        target_temp_low: 18
+        target_temp_high: 20
+    - action: select.select_option
+      target:
+        entity_id: select.ac_myzone
+      data:
+        option: "Master + Ens"
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.ac_master_ens
+          - climate.ac_sasha
+          - climate.ac_elise
+          - climate.ac_hugo
+          - climate.ac_rumpus
+      data:
+        temperature: 18
+    - action: climate.set_temperature
+      target:
+        entity_id:
+          - climate.ac_down_living
+          - climate.ac_study
+          - climate.ac_cinema
+      data:
+        temperature: 19

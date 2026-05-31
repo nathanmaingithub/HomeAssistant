@@ -1,0 +1,36 @@
+ # Secrets and tokens                                                                                                                                                                                                                              
+  secrets.yaml                                                                                                                                                                                                                                      
+  *.db                                                                                                                                                                                                                                              
+  *.db-shm                                                                                                                                                                                                                                          
+  *.db-wal                                                                                                                                                                                                                                          
+  *.log                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                    
+  # System files  
+  .DS_Store                                                                                                                                                                                                                                         
+  .uuid                                                                                                                                                                                                                                             
+  .HA_VERSION
+  .storage/                                                                                                                                                                                                                                         
+  .cloud/         
+  .google.token                                                                                                                                                                                                                                     
+                                                                                                                                                                                                                                                    
+  # Sensitive data                                                                                                                                                                                                                                  
+  home-assistant.log*                                                                                                                                                                                                                               
+  home-assistant_v2.db*                                                                                                                                                                                                                             
+  ip_bans.yaml                                                                                                                                                                                                                                      
+  known_devices.yaml                                                                                                                                                                                                                                
+  __pycache__/                                                                                                                                                                                                                                      
+  OZW_Log.txt                                                                                                                                                                                                                                       
+                                                                                                                                                                                                                                                    
+  # Large/generated files                                                                                                                                                                                                                           
+  tts/            
+  deps/
+  www/
+  *.conf                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                    
+  # HACS and custom components                                                                                                                                                                                                                      
+  custom_components/hacs/                                                                                                                                                                                                                           
+  www/community/                                                                                                                                                                                                                                    
+                  
+  # Only include custom component configs, not the code                                                                                                                                                                                             
+  custom_components/*
+  !custom_components/*.yaml     

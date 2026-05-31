@@ -1,0 +1,223 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+template:
+  - trigger:
+      - trigger: time_pattern
+        hours: "/1"
+      - trigger: homeassistant
+        event: start
+    action:
+      - action: weather.get_forecasts
+        data:
+          type: hourly
+        target:
+          entity_id: weather.forecast_home_2
+        response_variable: weather_forecast
+    binary_sensor:
+      - name: "Garden Watering Skip"
+        unique_id: garden_watering_skip
+        icon: mdi:weather-pouring
+        state: >
+          {% set today = now().date() %}
+          {% set yesterday = (now() - timedelta(days=1)).date() %}
+          {% set forecasts = weather_forecast['weather.forecast_home_2'].forecast | default([]) %}
+          {% set ns = namespace(skip=false) %}
+          {% for hour in forecasts %}
+            {% set d = as_datetime(hour.datetime).date() %}
+            {% if d == today and (hour.precipitation | default(0) | float) > 0.5 %}
+              {% set ns.skip = true %}
+            {% endif %}
+            {% if d == yesterday and (hour.precipitation | default(0) | float) > 0.5 %}
+              {% set ns.skip = true %}
+            {% endif %}
+            {% if d == today and hour.condition | default('') in ['rainy', 'pouring', 'lightning-rainy'] %}
+              {% set ns.skip = true %}
+            {% endif %}
+          {% endfor %}
+          {{ ns.skip }}
+        attributes:
+          reason: >
+            {% set today = now().date() %}
+            {% set yesterday = (now() - timedelta(days=1)).date() %}
+            {% set forecasts = weather_forecast['weather.forecast_home_2'].forecast | default([]) %}
+            {% set ns = namespace(reasons=[]) %}
+            {% for hour in forecasts %}
+              {% set d = as_datetime(hour.datetime).date() %}
+              {% if d == yesterday and (hour.precipitation | default(0) | float) > 0.5 %}
+                {% if 'Rained yesterday' not in (ns.reasons | join) %}
+                  {% set ns.reasons = ns.reasons + ['Rained yesterday'] %}
+                {% endif %}
+              {% endif %}
+              {% if d == today and (hour.precipitation | default(0) | float) > 0.5 %}
+                {% if 'Rain today' not in (ns.reasons | join) %}
+                  {% set ns.reasons = ns.reasons + ['Rain today'] %}
+                {% endif %}
+              {% endif %}
+              {% if d == today and hour.condition | default('') in ['rainy', 'pouring', 'lightning-rainy'] %}
+                {% if 'Rainy forecast' not in (ns.reasons | join) %}
+                  {% set ns.reasons = ns.reasons + ['Rainy forecast today'] %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+            {{ ns.reasons | join(', ') if ns.reasons | length > 0 else 'No rain detected' }}
+
+  - sensor:
+      # Green waste - every Tuesday
+      - name: "Green Waste"
+        unique_id: bin_green_waste
+        icon: mdi:leaf
+        state: >-
+          {% set collection_day = 1 %}
+          {% set today = now().date() %}
+          {% set days_ahead = (collection_day - today.weekday()) % 7 %}
+          {% if days_ahead == 0 and now().hour >= 18 %}
+            {% set days_ahead = 7 %}
+          {% endif %}
+          {% set next_date = today + timedelta(days=days_ahead) %}
+          {% if days_ahead == 0 %}
+            Today
+          {% elif days_ahead == 1 %}
+            Tomorrow
+          {% else %}
+            {{ next_date.strftime('%A %d %B') }}
+          {% endif %}
+        attributes:
+          days_until: >-
+            {% set collection_day = 1 %}
+            {% set today = now().date() %}
+            {% set days_ahead = (collection_day - today.weekday()) % 7 %}
+            {% if days_ahead == 0 and now().hour >= 18 %}
+              {% set days_ahead = 7 %}
+            {% endif %}
+            {{ days_ahead }}
+          colour: green
+
+      # Recycling (yellow bin) - fortnightly on Tuesday
+      - name: "Recycling"
+        unique_id: bin_recycling
+        icon: mdi:recycle
+        state: >-
+          {% set collection_day = 1 %}
+          {% set reference_date = as_datetime('2026-05-05').date() %}
+          {% set today = now().date() %}
+          {% set days_ahead = (collection_day - today.weekday()) % 7 %}
+          {% if days_ahead == 0 and now().hour >= 18 %}
+            {% set days_ahead = 7 %}
+          {% endif %}
+          {% set next_collection = today + timedelta(days=days_ahead) %}
+          {% set weeks_diff = ((next_collection - reference_date).days // 7) %}
+          {% if weeks_diff % 2 != 0 %}
+            {% set next_collection = next_collection + timedelta(days=7) %}
+            {% set days_ahead = days_ahead + 7 %}
+          {% endif %}
+          {% if days_ahead == 0 %}
+            Today
+          {% elif days_ahead == 1 %}
+            Tomorrow
+          {% else %}
+            {{ next_collection.strftime('%A %d %B') }}
+          {% endif %}
+        attributes:
+          days_until: >-
+            {% set collection_day = 1 %}
+            {% set reference_date = as_datetime('2026-05-05').date() %}
+            {% set today = now().date() %}
+            {% set days_ahead = (collection_day - today.weekday()) % 7 %}
+            {% if days_ahead == 0 and now().hour >= 18 %}
+              {% set days_ahead = 7 %}
+            {% endif %}
+            {% set next_collection = today + timedelta(days=days_ahead) %}
+            {% set weeks_diff = ((next_collection - reference_date).days // 7) %}
+            {% if weeks_diff % 2 != 0 %}
+              {% set days_ahead = days_ahead + 7 %}
+            {% endif %}
+            {{ days_ahead }}
+          colour: yellow
+
+      # General waste (red bin) - fortnightly on Tuesday (alternates with recycling)
+      - name: "General Waste"
+        unique_id: bin_general_waste
+        icon: mdi:trash-can
+        state: >-
+          {% set collection_day = 1 %}
+          {% set reference_date = as_datetime('2026-05-12').date() %}
+          {% set today = now().date() %}
+          {% set days_ahead = (collection_day - today.weekday()) % 7 %}
+          {% if days_ahead == 0 and now().hour >= 18 %}
+            {% set days_ahead = 7 %}
+          {% endif %}
+          {% set next_collection = today + timedelta(days=days_ahead) %}
+          {% set weeks_diff = ((next_collection - reference_date).days // 7) %}
+          {% if weeks_diff % 2 != 0 %}
+            {% set next_collection = next_collection + timedelta(days=7) %}
+            {% set days_ahead = days_ahead + 7 %}
+          {% endif %}
+          {% if days_ahead == 0 %}
+            Today
+          {% elif days_ahead == 1 %}
+            Tomorrow
+          {% else %}
+            {{ next_collection.strftime('%A %d %B') }}
+          {% endif %}
+        attributes:
+          days_until: >-
+            {% set collection_day = 1 %}
+            {% set reference_date = as_datetime('2026-05-12').date() %}
+            {% set today = now().date() %}
+            {% set days_ahead = (collection_day - today.weekday()) % 7 %}
+            {% if days_ahead == 0 and now().hour >= 18 %}
+              {% set days_ahead = 7 %}
+            {% endif %}
+            {% set next_collection = today + timedelta(days=days_ahead) %}
+            {% set weeks_diff = ((next_collection - reference_date).days // 7) %}
+            {% if weeks_diff % 2 != 0 %}
+              {% set days_ahead = days_ahead + 7 %}
+            {% endif %}
+            {{ days_ahead }}
+          colour: red
+
+      # Combined "next bin" sensor
+      - name: "Next Bin Collection"
+        unique_id: bin_next_collection
+        icon: mdi:delete-circle
+        state: >-
+          {% set green = state_attr('sensor.green_waste', 'days_until') | int(99) %}
+          {% set recycle = state_attr('sensor.recycling', 'days_until') | int(99) %}
+          {% set general = state_attr('sensor.general_waste', 'days_until') | int(99) %}
+          {% set min_days = [green, recycle, general] | min %}
+          {% if min_days == 0 %}
+            Today
+          {% elif min_days == 1 %}
+            Tomorrow
+          {% else %}
+            In {{ min_days }} days
+          {% endif %}
+        attributes:
+          days_until: >-
+            {% set green = state_attr('sensor.green_waste', 'days_until') | int(99) %}
+            {% set recycle = state_attr('sensor.recycling', 'days_until') | int(99) %}
+            {% set general = state_attr('sensor.general_waste', 'days_until') | int(99) %}
+            {{ [green, recycle, general] | min }}
+          this_week_bins: >-
+            {% set green = state_attr('sensor.green_waste', 'days_until') | int(99) %}
+            {% set recycle = state_attr('sensor.recycling', 'days_until') | int(99) %}
+            {% set general = state_attr('sensor.general_waste', 'days_until') | int(99) %}
+            {% set min_days = [green, recycle, general] | min %}
+            {% set bins = [] %}
+            {% if green == min_days %}{% set bins = bins + ['Green'] %}{% endif %}
+            {% if recycle == min_days %}{% set bins = bins + ['Recycling (yellow)'] %}{% endif %}
+            {% if general == min_days %}{% set bins = bins + ['General waste (red)'] %}{% endif %}
+            {{ bins | join(' + ') }}

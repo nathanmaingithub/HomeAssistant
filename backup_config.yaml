@@ -1,0 +1,49 @@
+mqtt:
+  host: 172.30.32.1        # YOUR MQTT IP
+  port: 1883
+  topic_prefix: frigate
+  client_id: frigate
+  user: mqttuser               # YOUR MQTT USERNAME
+  password: Noofta007!        # YOUT MQTT PASSWORD
+  stats_interval: 60
+
+##########################################################################
+
+go2rtc:
+  streams:
+                    ## CHANGE RTSP USERNAME AND PASSWORD
+    reolink:
+      - rtsp://admin:Noofta007!@192.168.0.12:554/h264Preview_01_sub
+      - ffmpeg:rtsp://admin:Noofta007!@192.168.0.12:554/h264Preview_01_sub#audio=pcm#audio=volume
+
+      ##- rtsp://admin:Noofta007!@192.168.0.24:554/h264Preview_01_sub
+      ##- ffmpeg:rtsp://admin:Noofta007!@192.168.0.24:554/h264Preview_01_sub#audio=pcm#audio=volume
+      ##- rtsp://admin:Noofta007!@192.168.0.87:554/h264Preview_01_sub
+      ##- ffmpeg:rtsp://admin:Noofta007!@192.168.0.87:554/h264Preview_01_sub#audio=pcm#audio=volume
+
+## THIS PREVENTS THE AUDIO COMING OUT FROM THE DOORBELL SOUNDING MUFFLED
+  ffmpeg:
+    bin: ffmpeg
+    volume: "-af \"volume=30dB\""
+
+##########################################################################
+
+cameras:
+
+  reolink:
+    ffmpeg:
+      inputs:
+                    ## CHANGE RTSP USERNAME AND PASSWORD
+
+        - path: rtsp://admin:Noofta007!@192.168.0.12:554/h264Preview_01_sub
+          roles:
+            - detect
+            - record
+      output_args:
+        record: preset-record-generic-audio-copy
+    zones:
+      reolink_zone:
+        coordinates: 0,480,800,480,543,323,362,329,0,61     # WATCH MY FRIGATE VIDEO SHOWING YOU WHAT THIS IS
+    motion:
+      mask:
+        - 613,309,800,361,800,0,275,0,297,339               # WATCH MY FRIGATE VIDEO SHOWING YOU WHAT THIS IS

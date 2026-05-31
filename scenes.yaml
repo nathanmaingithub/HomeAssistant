@@ -1,0 +1,294 @@
+- id: '1679137480053'
+  name: Front Sensor
+  entities:
+    switch.front_door_channel_2:
+      friendly_name: Front Door channel 2
+      state: 'off'
+    light.front_door_channel_1:
+      supported_color_modes:
+      - onoff
+      color_mode: onoff
+      friendly_name: Front Door channel 1
+      supported_features: 0
+      state: 'on'
+  metadata: {}
+- id: '1713998017415'
+  name: Net Radio
+  entities:
+    switch.adaptive_drc:
+      icon: ''
+      friendly_name: Adaptive DRC
+      state: 'on'
+    number.dialogue_level:
+      min: 0
+      max: 3
+      step: 1
+      mode: auto
+      icon: ''
+      friendly_name: Dialogue Level
+      state: '0'
+    number.dialogue_lift:
+      min: 0
+      max: 5
+      step: 1
+      mode: auto
+      icon: ''
+      friendly_name: Dialogue Lift
+      state: '0'
+    number.dts_dialogue_control:
+      min: 0
+      max: 6
+      step: 1
+      mode: auto
+      icon: ''
+      friendly_name: DTS Dialogue Control
+      state: '0'
+    switch.enhancer:
+      icon: ''
+      friendly_name: Enhancer
+      state: 'on'
+    switch.extra_bass:
+      icon: ''
+      friendly_name: Extra Bass
+      state: 'on'
+    select.link_audio_delay:
+      options:
+      - audio_sync
+      - balanced
+      - lip_sync
+      icon: ''
+      friendly_name: Link Audio Delay
+      state: balanced
+    select.link_control:
+      options:
+      - speed
+      - standard
+      - stability
+      icon: ''
+      friendly_name: Link Control
+      state: speed
+    media_player.lounge_room:
+      source_list:
+      - Spotify
+      - Qobuz
+      - TIDAL
+      - Deezer
+      - Amazon Music
+      - Alexa
+      - AirPlay
+      - MusicCast Link
+      - SERVER
+      - NET RADIO
+      - Bluetooth
+      - USB
+      - TUNER
+      - HDMI1
+      - Chromecast
+      - HDMI3
+      - HDMI4
+      - HDMI5
+      - HDMI6
+      - HDMI7
+      - TV
+      - AUDIO1
+      - AUDIO2
+      - AUDIO3
+      - AUDIO4
+      - PHONO
+      sound_mode_list:
+      - munich
+      - vienna
+      - amsterdam
+      - freiburg
+      - royaumont
+      - chamber
+      - village_vanguard
+      - warehouse_loft
+      - cellar_club
+      - roxy_theatre
+      - bottom_line
+      - sports
+      - action_game
+      - roleplaying_game
+      - music_video
+      - recital_opera
+      - standard
+      - spectacle
+      - sci-fi
+      - adventure
+      - drama
+      - mono_movie
+      - enhanced
+      - 2ch_stereo
+      - all_ch_stereo
+      - surr_decoder
+      - straight
+      group_members:
+      - media_player.lounge_room
+      volume_level: 0.4782608695652174
+      is_volume_muted: false
+      media_content_type: music
+      media_duration: 0
+      media_position: 0
+      media_position_updated_at: '2024-04-24T22:33:37.929504+00:00'
+      media_title: ''
+      media_artist: ''
+      media_album_name: ''
+      source: SERVER
+      sound_mode: all_ch_stereo
+      shuffle: false
+      repeat: 'off'
+      entity_picture: /api/media_player_proxy/media_player.lounge_room?token=0138c51525f56864e3a5fa56a9a7a8f77882271464734d38fe9c2dc0552c956f&cache=e3b0c44298fc1c14
+      icon: mdi:speaker
+      friendly_name: Lounge Room Fox FM
+      supported_features: 1040317
+      state: idle
+    switch.party_mode:
+      icon: ''
+      friendly_name: Party Mode
+      state: 'off'
+    switch.pure_direct:
+      icon: ''
+      friendly_name: Pure Direct
+      state: 'off'
+    select.sleep_timer:
+      options:
+      - 'off'
+      - 30_min
+      - 60_min
+      - 90_min
+      - 120_min
+      icon: ''
+      friendly_name: Sleep Timer
+      state: 'off'
+    number.subwoofer_volume:
+      min: -12
+      max: 12
+      step: 1
+      mode: auto
+      icon: ''
+      friendly_name: Subwoofer Volume
+      state: '4'
+    select.surround_decoder_device:
+      options:
+      - toggle
+      - auto
+      - dolby_surround
+      - dts_neural_x
+      icon: ''
+      friendly_name: Surround Decoder Device
+      state: dolby_surround
+    number.tone_control_bass:
+      min: -12
+      max: 12
+      step: 1
+      mode: auto
+      icon: ''
+      friendly_name: Tone Control Bass
+      state: '1'
+    select.tone_control_mode:
+      options:
+      - manual
+      icon: ''
+      friendly_name: Tone Control Mode
+      state: manual
+    number.tone_control_treble:
+      min: -12
+      max: 12
+      step: 1
+      mode: auto
+      icon: ''
+      friendly_name: Tone Control Treble
+      state: '1'
+  icon: mdi:radio-fm
+  metadata: {}
+- id: '1714624521130'
+  name: Main Bedroom All Blinds Up
+  entities:
+    remote.universal_remote:
+      friendly_name: Universal Remote
+      supported_features: 3
+      state: 'on'
+    script.upstairs_blind_1_down:
+      last_triggered: '2024-05-02T04:12:12.726035+00:00'
+      mode: single
+      current: 0
+      icon: mdi:blinds
+      friendly_name: Upstairs Blind 1 - Down
+      state: 'off'
+    script.upstairs_blind_2_down:
+      last_triggered: '2024-05-02T02:22:04.324055+00:00'
+      mode: single
+      current: 0
+      icon: mdi:blinds
+      friendly_name: Upstairs Blind 2 - Down
+      state: 'off'
+    script.upstairs_blind_3_down:
+      last_triggered: '2024-05-02T03:55:36.945344+00:00'
+      mode: single
+      current: 0
+      icon: mdi:blinds
+      friendly_name: Upstairs Blind 3 - Down
+      state: 'off'
+    script.upstairs_blind_4_down:
+      last_triggered: '2024-05-02T04:29:23.308435+00:00'
+      mode: single
+      current: 0
+      icon: mdi:blinds
+      friendly_name: Upstairs Blind 4 - Down
+      state: 'off'
+  icon: mdi:blinds
+  metadata:
+    script.upstairs_blind_1_down:
+      entity_only: true
+    script.upstairs_blind_2_down:
+      entity_only: true
+    script.upstairs_blind_3_down:
+      entity_only: true
+    script.upstairs_blind_4_down:
+      entity_only: true
+- id: '1714624821495'
+  name: Main Bedroom All Blinds Down
+  entities:
+    remote.universal_remote:
+      friendly_name: Universal Remote
+      supported_features: 3
+      state: 'on'
+    script.upstairs_blind_1_down:
+      last_triggered: '2024-05-02T04:44:19.651432+00:00'
+      mode: single
+      current: 0
+      icon: mdi:blinds
+      friendly_name: Upstairs Blind 1 - Down
+      state: 'off'
+    script.upstairs_blind_2_down:
+      last_triggered: '2024-05-02T04:44:12.718882+00:00'
+      mode: single
+      current: 0
+      icon: mdi:blinds
+      friendly_name: Upstairs Blind 2 - Down
+      state: 'off'
+    script.upstairs_blind_3_down:
+      last_triggered: '2024-05-02T04:43:39.524608+00:00'
+      mode: single
+      current: 0
+      icon: mdi:blinds
+      friendly_name: Upstairs Blind 3 - Down
+      state: 'off'
+    script.upstairs_blind_4_down:
+      last_triggered: '2024-05-02T04:43:34.989904+00:00'
+      mode: single
+      current: 0
+      icon: mdi:blinds
+      friendly_name: Upstairs Blind 4 - Down
+      state: 'off'
+  icon: mdi:blinds
+  metadata:
+    script.upstairs_blind_1_down:
+      entity_only: true
+    script.upstairs_blind_2_down:
+      entity_only: true
+    script.upstairs_blind_3_down:
+      entity_only: true
+    script.upstairs_blind_4_down:
+      entity_only: true

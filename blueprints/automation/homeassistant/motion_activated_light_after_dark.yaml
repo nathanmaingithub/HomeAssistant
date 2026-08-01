@@ -1,0 +1,73 @@
+blueprint:
+  name: Motion-activated Light After Dark
+  description: Turn on a light when motion is detected between two times
+  domain: automation
+  source_url: https://github.com/home-assistant/core/blob/551fb449752e1c3f55eb688d24509876020852d1/homeassistant/components/automation/blueprints/motion_light.yaml
+  input:
+    motion_entity:
+      name: Motion Sensor
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class: motion
+    light_target:
+      name: Light
+      selector:
+        entity:
+          domain: light
+    no_motion_wait:
+      name: Wait time
+      description: Time to leave the light on after last motion is detected.
+      default: 120
+      selector:
+        number:
+          min: 0
+          max: 3600
+          unit_of_measurement: seconds
+    after_time:
+      name: "After: "
+      description: runs only after this time.
+      default: "23:59:59"
+      selector:
+        time:
+
+    before_time:
+      name: "Before: "
+      description: runs only before this time.
+      default: "05:00:00"
+      selector:
+        time:
+
+# If motion is detected within the delay,
+# we restart the script.
+mode: restart
+max_exceeded: silent
+
+trigger:
+  platform: state
+  entity_id: !input motion_entity
+  from: "off"
+  to: "on"
+
+condition:
+  condition: time
+  after: !input "after_time"
+  before: !input "before_time"
+
+action:
+  - service: light.turn_on
+    data:
+      transition: 4
+      brightness_pct: 60
+      kelvin: 3000
+    target:
+      entity_id: !input light_target
+  - wait_for_trigger:
+      platform: state
+      entity_id: !input motion_entity
+      from: "on"
+      to: "off"
+  - delay: !input no_motion_wait
+  - service: light.turn_off
+    target:
+      entity_id: !input light_target

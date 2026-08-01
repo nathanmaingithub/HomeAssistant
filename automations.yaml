@@ -1,167 +1,277 @@
-- id: "1718277728808"
+- id: '1718277728808'
   alias: Turn on Front Outside lights when motion detected
-  description: ""
+  description: ''
   use_blueprint:
     path: homeassistant/motion_activated_light_after_dark.yaml
     input:
       motion_entity: binary_sensor.shellymotion2_8cf681a1fcec_motion
       light_target: light.front_door_channel_2
-      after_time: "17:30:00"
-      before_time: "07:00:00"
-
-- id: "1718280163510"
+      after_time: '17:30:00'
+      before_time: 07:00:00
+- id: '1718280163510'
   alias: Alfresco - Motion After After Dark
-  description: ""
+  description: ''
   use_blueprint:
     path: homeassistant/motion_activated_light_after_dark.yaml
     input:
       motion_entity: binary_sensor.shellymotion2_8cf681d54860_motion
       light_target: light.kitchen_channel_2
-      after_time: "17:00:00"
-      before_time: "08:00:00"
-
+      after_time: '17:00:00'
+      before_time: 08:00:00
 - id: garden_rain_skip
-  alias: "Garden - Skip Watering on Rain"
-  description: "Prevents garden watering if it has rained or rain is forecast"
+  alias: Garden - Skip Watering on Rain
+  description: Prevents garden watering if it has rained or rain is forecast
   triggers:
-    - trigger: state
-      entity_id:
-        - switch.front_drippers2
-        - switch.shellyplus1_441793a9ff58_switch_0
-        - switch.shellyplus1_083af2028abc_switch_0
-        - switch.back_drippers2
-      to: "on"
+  - trigger: state
+    entity_id:
+    - switch.front_drippers2
+    - switch.shellyplus1_441793a9ff58_switch_0
+    - switch.shellyplus1_083af2028abc_switch_0
+    - switch.back_drippers2
+    to: 'on'
   conditions:
-    - condition: state
-      entity_id: binary_sensor.garden_watering_skip
-      state: "on"
+  - condition: state
+    entity_id: binary_sensor.garden_watering_skip
+    state: 'on'
   actions:
-    - delay:
-        seconds: 2
-    - action: switch.turn_off
-      target:
-        entity_id: "{{ trigger.entity_id }}"
-    - action: persistent_notification.create
-      data:
-        title: "Garden Watering Skipped"
-        message: >-
-          {{ trigger.to_state.attributes.friendly_name }} was turned off.
-          Reason: {{ state_attr('binary_sensor.garden_watering_skip', 'reason') }}
-
-# ═══════════════════════════════════════════════════════
-# MYAIR ZONE MANAGEMENT AUTOMATIONS (MyAuto mode)
-# ═══════════════════════════════════════════════════════
-
-# ── MORNING: Switch to daytime targets ──
+  - delay:
+      seconds: 2
+  - action: switch.turn_off
+    target:
+      entity_id: '{{ trigger.entity_id }}'
+  - action: persistent_notification.create
+    data:
+      title: Garden Watering Skipped
+      message: '{{ trigger.to_state.attributes.friendly_name }} was turned off. Reason:
+        {{ state_attr(''binary_sensor.garden_watering_skip'', ''reason'') }}'
 - id: myair_morning_day_mode
-  alias: "MyAir - Morning: Day Profile"
-  description: "Set house to 21-23°C, all zones on"
-
+  alias: 'MyAir - Morning: 22°C All Zones'
+  description: Warm house to 22°C for the day
   triggers:
-    - trigger: time
-      at: "06:30:00"
-
+  - trigger: time
+    at: 06:30:00
   conditions:
-    - condition: not
-      conditions:
-        - condition: state
-          entity_id: climate.ac
-          state: "off"
-
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: climate.ac
+      state: 'off'
   actions:
-    - action: script.myair_day_profile
-
+  - action: climate.set_temperature
+    target:
+      entity_id:
+      - climate.ac_master_ens
+      - climate.ac_sasha
+      - climate.ac_elise
+      - climate.ac_hugo
+      - climate.ac_rumpus
+      - climate.ac_study
+      - climate.ac_cinema
+      - climate.ac_down_living
+    data:
+      temperature: 22
+      hvac_mode: heat_cool
   mode: single
-
-# ── AFTERNOON: Boost cooling upstairs ──
-- id: myair_afternoon_boost
-  alias: "MyAir - Afternoon: Boost upstairs cooling"
-  description: "Tighten cool target and prioritise upstairs"
-
+- id: myair_afternoon_maintain
+  alias: 'MyAir - Afternoon: Maintain 22°C'
+  description: Ensure all zones stay at 22°C
   triggers:
-    - trigger: time
-      at: "14:00:00"
-
+  - trigger: time
+    at: '14:00:00'
   conditions:
-    - condition: not
-      conditions:
-        - condition: state
-          entity_id: climate.ac
-          state: "off"
-
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: climate.ac
+      state: 'off'
   actions:
-    - action: script.myair_afternoon_cooling_profile
-
+  - action: climate.set_temperature
+    target:
+      entity_id:
+      - climate.ac_master_ens
+      - climate.ac_sasha
+      - climate.ac_elise
+      - climate.ac_hugo
+      - climate.ac_rumpus
+      - climate.ac_study
+      - climate.ac_cinema
+      - climate.ac_down_living
+    data:
+      temperature: 22
+      hvac_mode: heat_cool
   mode: single
-
-# ── NIGHT: Drop to sleeping temps ──
 - id: myair_night_mode
-  alias: "MyAir - Night: Sleep Profile"
-  description: "Set house to 18-20°C for sleeping"
-
+  alias: 'MyAir - Night: 18°C Sleep Temperature'
+  description: Allow house to cool to 18°C minimum for sleeping
   triggers:
-    - trigger: time
-      at: "21:00:00"
-
+  - trigger: time
+    at: '21:00:00'
   conditions:
-    - condition: not
-      conditions:
-        - condition: state
-          entity_id: climate.ac
-          state: "off"
-
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: climate.ac
+      state: 'off'
   actions:
-    - action: script.myair_night_profile
-
+  - action: climate.set_temperature
+    target:
+      entity_id:
+      - climate.ac_master_ens
+      - climate.ac_sasha
+      - climate.ac_elise
+      - climate.ac_hugo
+      - climate.ac_rumpus
+      - climate.ac_study
+      - climate.ac_cinema
+      - climate.ac_down_living
+    data:
+      temperature: 18
+      hvac_mode: heat_cool
   mode: single
-
-# ── SMART: Close overheating zone at night ──
-- id: myair_upstairs_too_hot_at_night
-  alias: "MyAir - Close overheating upstairs zone at night"
-  description: "If upstairs zone exceeds 22°C at night, close it"
-
+- id: myair_prevent_upstairs_overheat
+  alias: MyAir - Prevent Upstairs Overheating
+  description: Turn off upstairs zones when they exceed 23°C to prevent overheating
+    while downstairs heats
   triggers:
-    - trigger: numeric_state
-      entity_id: climate.ac_master_ens
-      attribute: current_temperature
-      above: 22
-    - trigger: numeric_state
-      entity_id: climate.ac_sasha
-      attribute: current_temperature
-      above: 22
-    - trigger: numeric_state
-      entity_id: climate.ac_elise
-      attribute: current_temperature
-      above: 22
-    - trigger: numeric_state
-      entity_id: climate.ac_hugo
-      attribute: current_temperature
-      above: 22
-    - trigger: numeric_state
-      entity_id: climate.ac_rumpus
-      attribute: current_temperature
-      above: 22
-
+  - trigger: numeric_state
+    entity_id:
+    - climate.ac_master_ens
+    - climate.ac_sasha
+    - climate.ac_elise
+    - climate.ac_hugo
+    - climate.ac_rumpus
+    attribute: current_temperature
+    above: 23
+    for:
+      minutes: 5
   conditions:
-    - condition: time
-      after: "21:00:00"
-      before: "06:30:00"
-    - condition: not
-      conditions:
-        - condition: state
-          entity_id: climate.ac
-          state: "off"
-
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: climate.ac
+      state: 'off'
+  - condition: template
+    value_template: "{% set all_zones = [\n  'climate.ac_master_ens',\n  'climate.ac_sasha',\n
+      \ 'climate.ac_elise',\n  'climate.ac_hugo',\n  'climate.ac_rumpus',\n  'climate.ac_study',\n
+      \ 'climate.ac_cinema',\n  'climate.ac_down_living'\n] %} {% set open_zones =
+      all_zones | reject('is_state', 'off') | list | count %} {{ open_zones > 3 }}"
   actions:
-    - action: climate.turn_off
-      target:
-        entity_id: "{{ trigger.entity_id }}"
-    - action: persistent_notification.create
-      data:
-        title: "MyAir Zone Closed"
-        message: >-
-          {{ trigger.to_state.attributes.friendly_name }} turned off —
-          reached {{ trigger.to_state.attributes.current_temperature }}°C at night.
-
+  - action: climate.turn_off
+    target:
+      entity_id: '{{ trigger.entity_id }}'
+  - action: persistent_notification.create
+    data:
+      title: MyAir Zone Temporarily Closed
+      message: '{{ trigger.to_state.attributes.friendly_name }} turned off — reached
+        {{ trigger.to_state.attributes.current_temperature }}°C (will reopen when
+        cool).'
   mode: queued
   max: 5
+- id: myair_minimum_zones_warning
+  alias: MyAir - Minimum Zones Warning
+  description: Alert if only 3 zones remain open (system safety threshold)
+  triggers:
+  - trigger: template
+    value_template: "{% set all_zones = [\n  'climate.ac_master_ens',\n  'climate.ac_sasha',\n
+      \ 'climate.ac_elise',\n  'climate.ac_hugo',\n  'climate.ac_rumpus',\n  'climate.ac_study',\n
+      \ 'climate.ac_cinema',\n  'climate.ac_down_living'\n] %} {% set open_zones =
+      all_zones | reject('is_state', 'off') | list | count %} {{ open_zones == 3 }}"
+  conditions:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: climate.ac
+      state: 'off'
+  actions:
+  - action: persistent_notification.create
+    data:
+      title: ⚠️ MyAir Minimum Zones Alert
+      message: "Only 3 zones remain open. System will not close any more zones to
+        protect HVAC. Open zones: {% set all_zones = [\n  'climate.ac_master_ens',\n
+        \ 'climate.ac_sasha',\n  'climate.ac_elise',\n  'climate.ac_hugo',\n  'climate.ac_rumpus',\n
+        \ 'climate.ac_study',\n  'climate.ac_cinema',\n  'climate.ac_down_living'\n]
+        %} {% for zone in all_zones if not is_state(zone, 'off') %} - {{ state_attr(zone,
+        'friendly_name') }} {% endfor %}"
+  mode: single
+- id: myair_reopen_upstairs_zones
+  alias: MyAir - Reopen Cooled Upstairs Zones
+  description: Turn upstairs zones back on when they cool to 21°C
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - climate.ac_master_ens
+    - climate.ac_sasha
+    - climate.ac_elise
+    - climate.ac_hugo
+    - climate.ac_rumpus
+    attribute: current_temperature
+    below: 21
+    for:
+      minutes: 5
+  conditions:
+  - condition: template
+    value_template: '{{ is_state(trigger.entity_id, ''off'') }}'
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: climate.ac
+      state: 'off'
+  - condition: time
+    after: 06:30:00
+    before: '21:00:00'
+  actions:
+  - action: climate.turn_on
+    target:
+      entity_id: '{{ trigger.entity_id }}'
+  - action: climate.set_temperature
+    target:
+      entity_id: '{{ trigger.entity_id }}'
+    data:
+      temperature: 22
+      hvac_mode: heat_cool
+  mode: queued
+  max: 5
+- id: '1785296563629'
+  alias: Court Area - Motion After Dark
+  description: Turns on light when motion is detected and illuminance is below 50
+    lux.
+  triggers:
+  - entity_id: binary_sensor.courtyardshellymotion2_motion
+    to: 'on'
+    trigger: state
+  conditions:
+  - condition: numeric_state
+    entity_id: sensor.courtyardshellymotion2_illuminance
+    below: 50
+  actions:
+  - action: switch.turn_on
+    target:
+      entity_id: switch.shellyswitch25_c8c9a375b1d4_channel_1
+  - wait_for_trigger:
+    - entity_id: binary_sensor.courtyardshellymotion2_motion
+      to: 'off'
+      for:
+        minutes: 2
+      trigger: state
+  - action: switch.turn_off
+    target:
+      entity_id: switch.shellyswitch25_c8c9a375b1d4_channel_1
+  mode: single
+- id: '1785380222103'
+  alias: Motion Detected around Pool
+  description: ''
+  triggers:
+  - trigger: webhook
+    allowed_methods:
+    - POST
+    - PUT
+    local_only: true
+    webhook_id: -faJsdyrnLONkZyLjh-VAX_Ql
+  conditions: []
+  actions:
+  - action: notify.mobile_app_nmiphone
+    metadata: {}
+    data:
+      title: Swimming Pool motion detected
+      message: Motion Detected around swimming pool
+  mode: single

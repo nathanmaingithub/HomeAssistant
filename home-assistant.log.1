@@ -1,0 +1,99 @@
+2026-01-04 12:05:50.110 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration hacs which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-01-04 12:05:50.111 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration frigate which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-01-04 12:05:50.113 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration localtuya which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2026-01-04 12:05:51.617 WARNING (MainThread) [homeassistant.components.lovelace] Lovelace is running in storage mode. Define resources via user interface
+2026-01-04 12:06:00.207 WARNING (MainThread) [homeassistant.config_entries] Config entry 'Nathan.main@gmail.com' for tuya integration could not authenticate: Authentication failed. Please re-authenticate
+2026-01-04 12:06:00.622 WARNING (ImportExecutor_0) [py.warnings] /usr/local/lib/python3.13/site-packages/google/__init__.py:2: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  __import__('pkg_resources').declare_namespace(__name__)
+
+2026-01-04 12:06:07.145 WARNING (ImportExecutor_0) [homeassistant.core] The deprecated alias Config was used from frigate. It will be removed in HA Core 2025.11. Use homeassistant.core_config.Config instead, please report it to the author of the 'frigate' custom integration
+2026-01-04 12:06:07.162 WARNING (ImportExecutor_0) [homeassistant.components.media_player.const] The deprecated constant MEDIA_CLASS_DIRECTORY was used from frigate. It will be removed in HA Core 2025.10. Use MediaClass.DIRECTORY instead, please report it to the author of the 'frigate' custom integration
+2026-01-04 12:06:07.167 WARNING (ImportExecutor_0) [homeassistant.components.media_player.const] The deprecated constant MEDIA_CLASS_IMAGE was used from frigate. It will be removed in HA Core 2025.10. Use MediaClass.IMAGE instead, please report it to the author of the 'frigate' custom integration
+2026-01-04 12:06:07.172 WARNING (ImportExecutor_0) [homeassistant.components.media_player.const] The deprecated constant MEDIA_CLASS_MOVIE was used from frigate. It will be removed in HA Core 2025.10. Use MediaClass.MOVIE instead, please report it to the author of the 'frigate' custom integration
+2026-01-04 12:06:07.177 WARNING (ImportExecutor_0) [homeassistant.components.media_player.const] The deprecated constant MEDIA_CLASS_VIDEO was used from frigate. It will be removed in HA Core 2025.10. Use MediaClass.VIDEO instead, please report it to the author of the 'frigate' custom integration
+2026-01-04 12:06:07.182 WARNING (ImportExecutor_0) [homeassistant.components.media_player.const] The deprecated constant MEDIA_TYPE_IMAGE was used from frigate. It will be removed in HA Core 2025.10. Use MediaType.IMAGE instead, please report it to the author of the 'frigate' custom integration
+2026-01-04 12:06:07.187 WARNING (ImportExecutor_0) [homeassistant.components.media_player.const] The deprecated constant MEDIA_TYPE_VIDEO was used from frigate. It will be removed in HA Core 2025.10. Use MediaType.VIDEO instead, please report it to the author of the 'frigate' custom integration
+2026-01-04 12:06:12.212 WARNING (MainThread) [reolink_aio.software_version] Reolink software version string 'v3.0.0.4662_250807128' has unknown date length format '250807128'
+2026-01-04 12:06:34.714 WARNING (Recorder) [homeassistant.components.recorder.migration] The database is about to upgrade from schema version 48 to 50
+2026-01-04 12:06:34.714 WARNING (Recorder) [homeassistant.components.recorder.migration] Upgrading recorder db schema to version 49
+2026-01-04 12:06:34.715 WARNING (Recorder) [homeassistant.components.recorder.migration] Adding columns mean_type to table statistics_meta. Note: this may take several minutes on large databases and slow machines. Please be patient!
+2026-01-04 12:06:34.730 WARNING (Recorder) [homeassistant.components.recorder.migration] Adding columns mean_weight to table statistics. Note: this may take several minutes on large databases and slow machines. Please be patient!
+2026-01-04 12:06:34.731 WARNING (Recorder) [homeassistant.components.recorder.migration] Adding columns mean_weight to table statistics_short_term. Note: this may take several minutes on large databases and slow machines. Please be patient!
+2026-01-04 12:06:34.763 WARNING (Recorder) [homeassistant.components.recorder.migration] Upgrade to version 49 done
+2026-01-04 12:06:34.763 WARNING (Recorder) [homeassistant.components.recorder.migration] Upgrading recorder db schema to version 50
+2026-01-04 12:06:34.777 WARNING (Recorder) [homeassistant.components.recorder.migration] Upgrade to version 50 done
+2026-01-04 12:07:31.828 ERROR (MainThread) [custom_components.frigate.api] Error fetching information from http://ccab4aaf-frigate:5000/api/stats: Cannot connect to host ccab4aaf-frigate:5000 ssl:default [Connect call failed ('172.30.33.2', 5000)]
+2026-01-04 12:07:31.829 ERROR (MainThread) [custom_components.frigate] Error fetching frigate data: 
+2026-01-04 12:07:36.825 ERROR (MainThread) [custom_components.frigate.api] Error fetching information from http://ccab4aaf-frigate:5000/api/stats: Cannot connect to host ccab4aaf-frigate:5000 ssl:default [Connect call failed ('172.30.33.2', 5000)]
+2026-01-04 12:07:40.701 ERROR (MainThread) [homeassistant.config_entries] Error setting up entry MyPlace for advantage_air
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/config_entries.py", line 749, in __async_setup_with_context
+    result = await component.async_setup_entry(hass, self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/advantage_air/__init__.py", line 67, in async_setup_entry
+    await coordinator.async_config_entry_first_refresh()
+  File "/usr/src/homeassistant/homeassistant/helpers/update_coordinator.py", line 319, in async_config_entry_first_refresh
+    await self._async_refresh(
+        log_failures=False, raise_on_auth_failed=True, raise_on_entry_error=True
+    )
+  File "/usr/src/homeassistant/homeassistant/helpers/update_coordinator.py", line 392, in _async_refresh
+    self.data = await self._async_update_data()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/update_coordinator.py", line 293, in _async_update_data
+    return await self.update_method()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/advantage_air/__init__.py", line 51, in async_get
+    return await api.async_get()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/advantage_air/__init__.py", line 46, in async_get
+    async with self.session.get(
+               ~~~~~~~~~~~~~~~~^
+        f"http://{self.ip}:{self.port}/getSystemData",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        timeout=aiohttp.ClientTimeout(total=4),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ) as resp:
+    ^
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/client.py", line 1488, in __aenter__
+    self._resp: _RetType = await self._coro
+                           ^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/client.py", line 770, in _request
+    resp = await handler(req)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/client.py", line 725, in _connect_and_send_request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        req, traces=traces, timeout=real_timeout
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/connector.py", line 642, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/connector.py", line 1209, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/connector.py", line 1550, in _create_direct_connection
+    transp, proto = await self._wrap_create_connection(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/connector.py", line 1268, in _wrap_create_connection
+    sock = await aiohappyeyeballs.start_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/aiohappyeyeballs/impl.py", line 73, in start_connection
+    sock = await _connect_sock(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/aiohappyeyeballs/impl.py", line 208, in _connect_sock
+    await loop.sock_connect(sock, address)
+  File "/usr/local/lib/python3.13/asyncio/selector_events.py", line 641, in sock_connect
+    return await fut
+           ^^^^^^^^^
+asyncio.exceptions.CancelledError: Home Assistant is stopping

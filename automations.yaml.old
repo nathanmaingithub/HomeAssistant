@@ -1,0 +1,167 @@
+- id: "1718277728808"
+  alias: Turn on Front Outside lights when motion detected
+  description: ""
+  use_blueprint:
+    path: homeassistant/motion_activated_light_after_dark.yaml
+    input:
+      motion_entity: binary_sensor.shellymotion2_8cf681a1fcec_motion
+      light_target: light.front_door_channel_2
+      after_time: "17:30:00"
+      before_time: "07:00:00"
+
+- id: "1718280163510"
+  alias: Alfresco - Motion After After Dark
+  description: ""
+  use_blueprint:
+    path: homeassistant/motion_activated_light_after_dark.yaml
+    input:
+      motion_entity: binary_sensor.shellymotion2_8cf681d54860_motion
+      light_target: light.kitchen_channel_2
+      after_time: "17:00:00"
+      before_time: "08:00:00"
+
+- id: garden_rain_skip
+  alias: "Garden - Skip Watering on Rain"
+  description: "Prevents garden watering if it has rained or rain is forecast"
+  triggers:
+    - trigger: state
+      entity_id:
+        - switch.front_drippers2
+        - switch.shellyplus1_441793a9ff58_switch_0
+        - switch.shellyplus1_083af2028abc_switch_0
+        - switch.back_drippers2
+      to: "on"
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.garden_watering_skip
+      state: "on"
+  actions:
+    - delay:
+        seconds: 2
+    - action: switch.turn_off
+      target:
+        entity_id: "{{ trigger.entity_id }}"
+    - action: persistent_notification.create
+      data:
+        title: "Garden Watering Skipped"
+        message: >-
+          {{ trigger.to_state.attributes.friendly_name }} was turned off.
+          Reason: {{ state_attr('binary_sensor.garden_watering_skip', 'reason') }}
+
+# ═══════════════════════════════════════════════════════
+# MYAIR ZONE MANAGEMENT AUTOMATIONS (MyAuto mode)
+# ═══════════════════════════════════════════════════════
+
+# ── MORNING: Switch to daytime targets ──
+- id: myair_morning_day_mode
+  alias: "MyAir - Morning: Day Profile"
+  description: "Set house to 21-23°C, all zones on"
+
+  triggers:
+    - trigger: time
+      at: "06:30:00"
+
+  conditions:
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: climate.ac
+          state: "off"
+
+  actions:
+    - action: script.myair_day_profile
+
+  mode: single
+
+# ── AFTERNOON: Boost cooling upstairs ──
+- id: myair_afternoon_boost
+  alias: "MyAir - Afternoon: Boost upstairs cooling"
+  description: "Tighten cool target and prioritise upstairs"
+
+  triggers:
+    - trigger: time
+      at: "14:00:00"
+
+  conditions:
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: climate.ac
+          state: "off"
+
+  actions:
+    - action: script.myair_afternoon_cooling_profile
+
+  mode: single
+
+# ── NIGHT: Drop to sleeping temps ──
+- id: myair_night_mode
+  alias: "MyAir - Night: Sleep Profile"
+  description: "Set house to 18-20°C for sleeping"
+
+  triggers:
+    - trigger: time
+      at: "21:00:00"
+
+  conditions:
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: climate.ac
+          state: "off"
+
+  actions:
+    - action: script.myair_night_profile
+
+  mode: single
+
+# ── SMART: Close overheating zone at night ──
+- id: myair_upstairs_too_hot_at_night
+  alias: "MyAir - Close overheating upstairs zone at night"
+  description: "If upstairs zone exceeds 22°C at night, close it"
+
+  triggers:
+    - trigger: numeric_state
+      entity_id: climate.ac_master_ens
+      attribute: current_temperature
+      above: 22
+    - trigger: numeric_state
+      entity_id: climate.ac_sasha
+      attribute: current_temperature
+      above: 22
+    - trigger: numeric_state
+      entity_id: climate.ac_elise
+      attribute: current_temperature
+      above: 22
+    - trigger: numeric_state
+      entity_id: climate.ac_hugo
+      attribute: current_temperature
+      above: 22
+    - trigger: numeric_state
+      entity_id: climate.ac_rumpus
+      attribute: current_temperature
+      above: 22
+
+  conditions:
+    - condition: time
+      after: "21:00:00"
+      before: "06:30:00"
+    - condition: not
+      conditions:
+        - condition: state
+          entity_id: climate.ac
+          state: "off"
+
+  actions:
+    - action: climate.turn_off
+      target:
+        entity_id: "{{ trigger.entity_id }}"
+    - action: persistent_notification.create
+      data:
+        title: "MyAir Zone Closed"
+        message: >-
+          {{ trigger.to_state.attributes.friendly_name }} turned off —
+          reached {{ trigger.to_state.attributes.current_temperature }}°C at night.
+
+  mode: queued
+  max: 5

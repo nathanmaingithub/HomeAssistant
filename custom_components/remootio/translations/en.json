@@ -1,0 +1,73 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Remootio",
+        "description": "Enter your Remootio device details. You can find the API keys in the Remootio app under Settings > API Access.",
+        "data": {
+          "host": "Host/IP Address",
+          "api_secret_key": "API Secret Key",
+          "api_auth_key": "API Auth Key",
+          "name": "Device Name"
+        },
+        "data_description": {
+          "host": "The IP address or hostname of your Remootio device",
+          "api_secret_key": "64-character hex string from the Remootio app",
+          "api_auth_key": "64-character hex string from the Remootio app",
+          "name": "A friendly name for this garage door"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Remootio",
+        "description": "Update your Remootio device settings.",
+        "data": {
+          "host": "Host/IP Address",
+          "api_secret_key": "API Secret Key",
+          "api_auth_key": "API Auth Key",
+          "name": "Device Name"
+        },
+        "data_description": {
+          "host": "The IP address or hostname of your Remootio device",
+          "api_secret_key": "64-character hex string from the Remootio app",
+          "api_auth_key": "64-character hex string from the Remootio app",
+          "name": "A friendly name for this garage door"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to connect to device. Check the IP address and ensure the device is online.",
+      "invalid_auth": "Invalid API keys. Please verify your API Secret Key and API Auth Key.",
+      "unknown": "An unexpected error occurred."
+    },
+    "abort": {
+      "already_configured": "This device is already configured.",
+      "reconfigure_successful": "Reconfiguration successful."
+    }
+  },
+  "entity": {
+    "cover": {
+      "channel_1": {
+        "name": "Channel 1"
+      }
+    },
+    "button": {
+      "toggle_channel_1": {
+        "name": "Toggle Channel 1"
+      },
+      "toggle_channel_2": {
+        "name": "Toggle Channel 2"
+      }
+    },
+    "sensor": {
+      "operation_count_channel_1": {
+        "name": "Operation Count Channel 1"
+      },
+      "last_opened_channel_1": {
+        "name": "Last Opened Channel 1"
+      },
+      "last_closed_channel_1": {
+        "name": "Last Closed Channel 1"
+      }
+    }
+  }
+}

@@ -285,7 +285,9 @@
     is below 50 lux. Turns off after 5 minutes of no motion.
   triggers:
   - entity_id: cover.remootio_driveway_gate_channel_1_2
-    to: open
+    to:
+    - opening
+    - open
     trigger: state
   conditions:
   - condition: numeric_state

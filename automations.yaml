@@ -246,7 +246,9 @@
   actions:
   - action: switch.turn_on
     target:
-      entity_id: switch.shellyswitch25_c8c9a375b1d4_channel_1
+      entity_id:
+      - switch.shellyswitch25_c8c9a375b1d4_channel_1
+      - switch.courtyard_lights_2
   - wait_for_trigger:
     - entity_id: binary_sensor.courtyardshellymotion2_motion
       to: 'off'
@@ -255,7 +257,9 @@
       trigger: state
   - action: switch.turn_off
     target:
-      entity_id: switch.shellyswitch25_c8c9a375b1d4_channel_1
+      entity_id:
+      - switch.shellyswitch25_c8c9a375b1d4_channel_1
+      - switch.courtyard_lights_2
   mode: single
 - id: '1785380222103'
   alias: Motion Detected around Pool
@@ -274,4 +278,30 @@
     data:
       title: Swimming Pool motion detected
       message: Motion Detected around swimming pool
+  mode: single
+- id: '1785633194478'
+  alias: Front Gate - Light On When Gate Opens After Dark
+  description: Turns on front door light when the driveway gate opens and illuminance
+    is below 50 lux. Turns off after 5 minutes of no motion.
+  triggers:
+  - entity_id: cover.remootio_driveway_gate_channel_1_2
+    to: open
+    trigger: state
+  conditions:
+  - condition: numeric_state
+    entity_id: sensor.shellymotion2_8cf681a1fcec_illuminance
+    below: 50
+  actions:
+  - action: light.turn_on
+    target:
+      entity_id: light.front_door_channel_2
+  - wait_for_trigger:
+    - entity_id: binary_sensor.shellymotion2_8cf681a1fcec_motion
+      to: 'off'
+      for:
+        minutes: 5
+      trigger: state
+  - action: light.turn_off
+    target:
+      entity_id: light.front_door_channel_2
   mode: single

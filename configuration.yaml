@@ -13,6 +13,30 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
+lovelace:
+  mode: storage
+  dashboards:
+    climate-dashboard:
+      mode: yaml
+      title: Climate
+      icon: mdi:thermostat
+      show_in_sidebar: true
+      filename: ui-climate.yaml
+
+input_boolean:
+  hvac_schedule_enabled:
+    name: HVAC Schedule
+    icon: mdi:calendar-clock
+
+input_number:
+  hvac_temp_offset:
+    name: HVAC Temperature Offset
+    icon: mdi:thermometer-plus
+    min: -3
+    max: 3
+    step: 0.5
+    unit_of_measurement: "°C"
+
 template:
   - trigger:
       - trigger: time_pattern

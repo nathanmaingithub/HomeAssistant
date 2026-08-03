@@ -51,6 +51,9 @@
   - trigger: time
     at: 06:30:00
   conditions:
+  - condition: state
+    entity_id: input_boolean.hvac_schedule_enabled
+    state: 'on'
   - condition: not
     conditions:
     - condition: state
@@ -66,6 +69,9 @@
   - trigger: time
     at: '14:00:00'
   conditions:
+  - condition: state
+    entity_id: input_boolean.hvac_schedule_enabled
+    state: 'on'
   - condition: not
     conditions:
     - condition: state
@@ -81,6 +87,9 @@
   - trigger: time
     at: '21:00:00'
   conditions:
+  - condition: state
+    entity_id: input_boolean.hvac_schedule_enabled
+    state: 'on'
   - condition: not
     conditions:
     - condition: state

@@ -1,0 +1,56 @@
+views:
+  - title: Climate
+    path: climate
+    icon: mdi:thermostat
+    cards:
+      - type: entities
+        title: HVAC Controls
+        entities:
+          - entity: input_boolean.hvac_schedule_enabled
+            name: Schedule Enabled
+          - entity: input_number.hvac_temp_offset
+            name: Temperature Offset
+
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+          - type: button
+            name: Day Mode
+            icon: mdi:white-balance-sunny
+            tap_action:
+              action: perform-action
+              perform_action: script.myair_day_profile
+            icon_height: 40px
+          - type: button
+            name: Night Mode
+            icon: mdi:weather-night
+            tap_action:
+              action: perform-action
+              perform_action: script.myair_night_profile
+            icon_height: 40px
+
+      - type: glance
+        title: Zone Status
+        show_state: true
+        entities:
+          - entity: climate.ac_master_ens
+            name: Master
+          - entity: climate.ac_sasha
+            name: Sasha
+          - entity: climate.ac_elise
+            name: Elise
+          - entity: climate.ac_hugo
+            name: Hugo
+          - entity: climate.ac_rumpus
+            name: Rumpus
+          - entity: climate.ac_down_living
+            name: Living
+          - entity: climate.ac_study
+            name: Study
+          - entity: climate.ac_cinema
+            name: Cinema
+
+      - type: thermostat
+        entity: climate.ac
+        name: Main Unit

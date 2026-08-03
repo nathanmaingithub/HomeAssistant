@@ -30,27 +30,37 @@ views:
               perform_action: script.myair_night_profile
             icon_height: 40px
 
-      - type: glance
-        title: Zone Status
-        show_state: true
-        entities:
-          - entity: climate.ac_master_ens
-            name: Master
-          - entity: climate.ac_sasha
-            name: Sasha
-          - entity: climate.ac_elise
-            name: Elise
-          - entity: climate.ac_hugo
-            name: Hugo
-          - entity: climate.ac_rumpus
-            name: Rumpus
-          - entity: climate.ac_down_living
-            name: Living
-          - entity: climate.ac_study
-            name: Study
-          - entity: climate.ac_cinema
-            name: Cinema
-
       - type: thermostat
         entity: climate.ac
         name: Main Unit
+
+      - type: markdown
+        title: Zone Summary
+        content: |
+          | Zone | Temp | Setpoint | State |
+          |------|------|----------|-------|
+          | Master | {{ state_attr('climate.ac_master_ens', 'current_temperature') }}°C | {{ state_attr('climate.ac_master_ens', 'temperature') }}°C | {{ states('climate.ac_master_ens') }} |
+          | Sasha | {{ state_attr('climate.ac_sasha', 'current_temperature') }}°C | {{ state_attr('climate.ac_sasha', 'temperature') }}°C | {{ states('climate.ac_sasha') }} |
+          | Elise | {{ state_attr('climate.ac_elise', 'current_temperature') }}°C | {{ state_attr('climate.ac_elise', 'temperature') }}°C | {{ states('climate.ac_elise') }} |
+          | Hugo | {{ state_attr('climate.ac_hugo', 'current_temperature') }}°C | {{ state_attr('climate.ac_hugo', 'temperature') }}°C | {{ states('climate.ac_hugo') }} |
+          | Rumpus | {{ state_attr('climate.ac_rumpus', 'current_temperature') }}°C | {{ state_attr('climate.ac_rumpus', 'temperature') }}°C | {{ states('climate.ac_rumpus') }} |
+          | Living | {{ state_attr('climate.ac_down_living', 'current_temperature') }}°C | {{ state_attr('climate.ac_down_living', 'temperature') }}°C | {{ states('climate.ac_down_living') }} |
+          | Study | {{ state_attr('climate.ac_study', 'current_temperature') }}°C | {{ state_attr('climate.ac_study', 'temperature') }}°C | {{ states('climate.ac_study') }} |
+          | Cinema | {{ state_attr('climate.ac_cinema', 'current_temperature') }}°C | {{ state_attr('climate.ac_cinema', 'temperature') }}°C | {{ states('climate.ac_cinema') }} |
+
+      - type: entities
+        title: Schedule Automations
+        show_header_toggle: false
+        entities:
+          - entity: automation.myair_morning_day_profile
+            name: "Morning: Day Profile (06:30)"
+          - entity: automation.myair_afternoon_reapply_day_profile
+            name: "Afternoon: Reapply (14:00)"
+          - entity: automation.myair_night_sleep_profile
+            name: "Night: Sleep Profile (21:00)"
+          - entity: automation.myair_prevent_upstairs_overheating
+            name: Prevent Upstairs Overheating
+          - entity: automation.myair_reopen_cooled_upstairs_zones
+            name: Reopen Cooled Zones
+          - entity: automation.myair_minimum_zones_warning
+            name: Minimum Zones Warning

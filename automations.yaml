@@ -45,8 +45,8 @@
       message: '{{ trigger.to_state.attributes.friendly_name }} was turned off. Reason:
         {{ state_attr(''binary_sensor.garden_watering_skip'', ''reason'') }}'
 - id: myair_morning_day_mode
-  alias: 'MyAir - Morning: 22°C All Zones'
-  description: Warm house to 22°C for the day
+  alias: 'MyAir - Morning: Day Profile'
+  description: Activate day profile at 06:30 (upstairs 21°C, downstairs 22°C)
   triggers:
   - trigger: time
     at: 06:30:00
@@ -57,24 +57,11 @@
       entity_id: climate.ac
       state: 'off'
   actions:
-  - action: climate.set_temperature
-    target:
-      entity_id:
-      - climate.ac_master_ens
-      - climate.ac_sasha
-      - climate.ac_elise
-      - climate.ac_hugo
-      - climate.ac_rumpus
-      - climate.ac_study
-      - climate.ac_cinema
-      - climate.ac_down_living
-    data:
-      temperature: 22
-      hvac_mode: heat_cool
+  - action: script.myair_day_profile
   mode: single
 - id: myair_afternoon_maintain
-  alias: 'MyAir - Afternoon: Maintain 22°C'
-  description: Ensure all zones stay at 22°C
+  alias: 'MyAir - Afternoon: Reapply Day Profile'
+  description: Reapply day profile at 14:00 to correct any drift
   triggers:
   - trigger: time
     at: '14:00:00'
@@ -85,24 +72,11 @@
       entity_id: climate.ac
       state: 'off'
   actions:
-  - action: climate.set_temperature
-    target:
-      entity_id:
-      - climate.ac_master_ens
-      - climate.ac_sasha
-      - climate.ac_elise
-      - climate.ac_hugo
-      - climate.ac_rumpus
-      - climate.ac_study
-      - climate.ac_cinema
-      - climate.ac_down_living
-    data:
-      temperature: 22
-      hvac_mode: heat_cool
+  - action: script.myair_day_profile
   mode: single
 - id: myair_night_mode
-  alias: 'MyAir - Night: 18°C Sleep Temperature'
-  description: Allow house to cool to 18°C minimum for sleeping
+  alias: 'MyAir - Night: Sleep Profile'
+  description: Activate night profile at 21:00 (upstairs 19°C, downstairs 20°C)
   triggers:
   - trigger: time
     at: '21:00:00'
@@ -113,24 +87,11 @@
       entity_id: climate.ac
       state: 'off'
   actions:
-  - action: climate.set_temperature
-    target:
-      entity_id:
-      - climate.ac_master_ens
-      - climate.ac_sasha
-      - climate.ac_elise
-      - climate.ac_hugo
-      - climate.ac_rumpus
-      - climate.ac_study
-      - climate.ac_cinema
-      - climate.ac_down_living
-    data:
-      temperature: 18
-      hvac_mode: heat_cool
+  - action: script.myair_night_profile
   mode: single
 - id: myair_prevent_upstairs_overheat
   alias: MyAir - Prevent Upstairs Overheating
-  description: Turn off upstairs zones when they exceed 23°C to prevent overheating
+  description: Turn off upstairs zones when they exceed 24°C to prevent overheating
     while downstairs heats
   triggers:
   - trigger: numeric_state
@@ -141,7 +102,7 @@
     - climate.ac_hugo
     - climate.ac_rumpus
     attribute: current_temperature
-    above: 23
+    above: 24
     for:
       minutes: 5
   conditions:
@@ -195,7 +156,7 @@
   mode: single
 - id: myair_reopen_upstairs_zones
   alias: MyAir - Reopen Cooled Upstairs Zones
-  description: Turn upstairs zones back on when they cool to 21°C
+  description: Turn upstairs zones back on when they cool to 20°C
   triggers:
   - trigger: numeric_state
     entity_id:
@@ -205,7 +166,7 @@
     - climate.ac_hugo
     - climate.ac_rumpus
     attribute: current_temperature
-    below: 21
+    below: 20
     for:
       minutes: 5
   conditions:
@@ -227,7 +188,7 @@
     target:
       entity_id: '{{ trigger.entity_id }}'
     data:
-      temperature: 22
+      temperature: 21
       hvac_mode: heat_cool
   mode: queued
   max: 5

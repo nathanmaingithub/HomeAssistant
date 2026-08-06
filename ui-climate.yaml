@@ -50,17 +50,17 @@ views:
           - type: custom:mushroom-template-card
             primary: Hugo
             secondary: >-
-              {{ state_attr('climate.ac_hugo', 'current_temperature') }}°C
-              (target {{ state_attr('climate.ac_hugo', 'temperature') }}°C) ·
-              Vent {{ states('sensor.ac_hugo_vent') }}%
-            icon: mdi:thermometer
+              {{ state_attr('climate.ac_hugo', 'current_temperature') }}°C → {{ state_attr('climate.ac_hugo', 'temperature') }}°C
+              · Vent {{ states('sensor.ac_hugo_vent') }}% · {{ 'Open' if states('climate.ac_hugo') != 'off' else 'Closed' }}
+            icon: >-
+              {{ 'mdi:hvac' if states('climate.ac_hugo') != 'off' else 'mdi:hvac-off' }}
             color: >-
-              {% set current = state_attr('climate.ac_hugo',
-              'current_temperature') | float(0) %} {% set target =
-              state_attr('climate.ac_hugo', 'temperature') | float(0) %} {% if
-              current > target + 1 %}red {% elif current < target - 1 %}blue {%
-              else %}green{% endif %}
-            features_position: bottom
+              {% set current = state_attr('climate.ac_hugo', 'current_temperature') | float(0) %}
+              {% set target = state_attr('climate.ac_hugo', 'temperature') | float(0) %}
+              {% if states('climate.ac_hugo') == 'off' %}grey
+              {% elif current > target + 1 %}red
+              {% elif current < target - 1 %}blue
+              {% else %}green{% endif %}
             tap_action:
               action: more-info
             entity: climate.ac_hugo
@@ -68,17 +68,17 @@ views:
           - type: custom:mushroom-template-card
             primary: Rumpus
             secondary: >-
-              {{ state_attr('climate.ac_rumpus', 'current_temperature') }}°C
-              (target {{ state_attr('climate.ac_rumpus', 'temperature') }}°C) ·
-              Vent {{ states('sensor.ac_rumpus_vent') }}%
-            icon: mdi:thermometer
+              {{ state_attr('climate.ac_rumpus', 'current_temperature') }}°C → {{ state_attr('climate.ac_rumpus', 'temperature') }}°C
+              · Vent {{ states('sensor.ac_rumpus_vent') }}% · {{ 'Open' if states('climate.ac_rumpus') != 'off' else 'Closed' }}
+            icon: >-
+              {{ 'mdi:hvac' if states('climate.ac_rumpus') != 'off' else 'mdi:hvac-off' }}
             color: >-
-              {% set current = state_attr('climate.ac_rumpus',
-              'current_temperature') | float(0) %} {% set target =
-              state_attr('climate.ac_rumpus', 'temperature') | float(0) %} {%
-              if current > target + 1 %}red {% elif current < target - 1 %}blue
+              {% set current = state_attr('climate.ac_rumpus', 'current_temperature') | float(0) %}
+              {% set target = state_attr('climate.ac_rumpus', 'temperature') | float(0) %}
+              {% if states('climate.ac_rumpus') == 'off' %}grey
+              {% elif current > target + 1 %}red
+              {% elif current < target - 1 %}blue
               {% else %}green{% endif %}
-            features_position: bottom
             tap_action:
               action: more-info
             entity: climate.ac_rumpus
@@ -86,17 +86,17 @@ views:
           - type: custom:mushroom-template-card
             primary: Master
             secondary: >-
-              {{ state_attr('climate.ac_master_ens', 'current_temperature') }}°C
-              (target {{ state_attr('climate.ac_master_ens', 'temperature') }}°C) ·
-              Vent {{ states('sensor.ac_master_ens_vent') }}%
-            icon: mdi:thermometer
+              {{ state_attr('climate.ac_master_ens', 'current_temperature') }}°C → {{ state_attr('climate.ac_master_ens', 'temperature') }}°C
+              · Vent {{ states('sensor.ac_master_ens_vent') }}% · {{ 'Open' if states('climate.ac_master_ens') != 'off' else 'Closed' }}
+            icon: >-
+              {{ 'mdi:hvac' if states('climate.ac_master_ens') != 'off' else 'mdi:hvac-off' }}
             color: >-
-              {% set current = state_attr('climate.ac_master_ens',
-              'current_temperature') | float(0) %} {% set target =
-              state_attr('climate.ac_master_ens', 'temperature') | float(0) %} {%
-              if current > target + 1 %}red {% elif current < target - 1 %}blue {%
-              else %}green{% endif %}
-            features_position: bottom
+              {% set current = state_attr('climate.ac_master_ens', 'current_temperature') | float(0) %}
+              {% set target = state_attr('climate.ac_master_ens', 'temperature') | float(0) %}
+              {% if states('climate.ac_master_ens') == 'off' %}grey
+              {% elif current > target + 1 %}red
+              {% elif current < target - 1 %}blue
+              {% else %}green{% endif %}
             tap_action:
               action: more-info
             entity: climate.ac_master_ens
@@ -104,17 +104,17 @@ views:
           - type: custom:mushroom-template-card
             primary: Sasha
             secondary: >-
-              {{ state_attr('climate.ac_sasha', 'current_temperature') }}°C
-              (target {{ state_attr('climate.ac_sasha', 'temperature') }}°C) ·
-              Vent {{ states('sensor.ac_sasha_vent') }}%
-            icon: mdi:thermometer
+              {{ state_attr('climate.ac_sasha', 'current_temperature') }}°C → {{ state_attr('climate.ac_sasha', 'temperature') }}°C
+              · Vent {{ states('sensor.ac_sasha_vent') }}% · {{ 'Open' if states('climate.ac_sasha') != 'off' else 'Closed' }}
+            icon: >-
+              {{ 'mdi:hvac' if states('climate.ac_sasha') != 'off' else 'mdi:hvac-off' }}
             color: >-
-              {% set current = state_attr('climate.ac_sasha',
-              'current_temperature') | float(0) %} {% set target =
-              state_attr('climate.ac_sasha', 'temperature') | float(0) %} {% if
-              current > target + 1 %}red {% elif current < target - 1 %}blue {%
-              else %}green{% endif %}
-            features_position: bottom
+              {% set current = state_attr('climate.ac_sasha', 'current_temperature') | float(0) %}
+              {% set target = state_attr('climate.ac_sasha', 'temperature') | float(0) %}
+              {% if states('climate.ac_sasha') == 'off' %}grey
+              {% elif current > target + 1 %}red
+              {% elif current < target - 1 %}blue
+              {% else %}green{% endif %}
             tap_action:
               action: more-info
             entity: climate.ac_sasha
@@ -122,17 +122,17 @@ views:
           - type: custom:mushroom-template-card
             primary: Elise
             secondary: >-
-              {{ state_attr('climate.ac_elise', 'current_temperature') }}°C
-              (target {{ state_attr('climate.ac_elise', 'temperature') }}°C) ·
-              Vent {{ states('sensor.ac_elise_vent') }}%
-            icon: mdi:thermometer
+              {{ state_attr('climate.ac_elise', 'current_temperature') }}°C → {{ state_attr('climate.ac_elise', 'temperature') }}°C
+              · Vent {{ states('sensor.ac_elise_vent') }}% · {{ 'Open' if states('climate.ac_elise') != 'off' else 'Closed' }}
+            icon: >-
+              {{ 'mdi:hvac' if states('climate.ac_elise') != 'off' else 'mdi:hvac-off' }}
             color: >-
-              {% set current = state_attr('climate.ac_elise',
-              'current_temperature') | float(0) %} {% set target =
-              state_attr('climate.ac_elise', 'temperature') | float(0) %} {% if
-              current > target + 1 %}red {% elif current < target - 1 %}blue {%
-              else %}green{% endif %}
-            features_position: bottom
+              {% set current = state_attr('climate.ac_elise', 'current_temperature') | float(0) %}
+              {% set target = state_attr('climate.ac_elise', 'temperature') | float(0) %}
+              {% if states('climate.ac_elise') == 'off' %}grey
+              {% elif current > target + 1 %}red
+              {% elif current < target - 1 %}blue
+              {% else %}green{% endif %}
             tap_action:
               action: more-info
             entity: climate.ac_elise
@@ -140,17 +140,17 @@ views:
           - type: custom:mushroom-template-card
             primary: Living
             secondary: >-
-              {{ state_attr('climate.ac_down_living', 'current_temperature') }}°C
-              (target {{ state_attr('climate.ac_down_living', 'temperature') }}°C) ·
-              Vent {{ states('sensor.ac_down_living_vent') }}%
-            icon: mdi:thermometer
+              {{ state_attr('climate.ac_down_living', 'current_temperature') }}°C → {{ state_attr('climate.ac_down_living', 'temperature') }}°C
+              · Vent {{ states('sensor.ac_down_living_vent') }}% · {{ 'Open' if states('climate.ac_down_living') != 'off' else 'Closed' }}
+            icon: >-
+              {{ 'mdi:hvac' if states('climate.ac_down_living') != 'off' else 'mdi:hvac-off' }}
             color: >-
-              {% set current = state_attr('climate.ac_down_living',
-              'current_temperature') | float(0) %} {% set target =
-              state_attr('climate.ac_down_living', 'temperature') | float(0) %} {%
-              if current > target + 1 %}red {% elif current < target - 1 %}blue {%
-              else %}green{% endif %}
-            features_position: bottom
+              {% set current = state_attr('climate.ac_down_living', 'current_temperature') | float(0) %}
+              {% set target = state_attr('climate.ac_down_living', 'temperature') | float(0) %}
+              {% if states('climate.ac_down_living') == 'off' %}grey
+              {% elif current > target + 1 %}red
+              {% elif current < target - 1 %}blue
+              {% else %}green{% endif %}
             tap_action:
               action: more-info
             entity: climate.ac_down_living
@@ -158,17 +158,17 @@ views:
           - type: custom:mushroom-template-card
             primary: Study
             secondary: >-
-              {{ state_attr('climate.ac_study', 'current_temperature') }}°C
-              (target {{ state_attr('climate.ac_study', 'temperature') }}°C) ·
-              Vent {{ states('sensor.ac_study_vent') }}%
-            icon: mdi:thermometer
+              {{ state_attr('climate.ac_study', 'current_temperature') }}°C → {{ state_attr('climate.ac_study', 'temperature') }}°C
+              · Vent {{ states('sensor.ac_study_vent') }}% · {{ 'Open' if states('climate.ac_study') != 'off' else 'Closed' }}
+            icon: >-
+              {{ 'mdi:hvac' if states('climate.ac_study') != 'off' else 'mdi:hvac-off' }}
             color: >-
-              {% set current = state_attr('climate.ac_study',
-              'current_temperature') | float(0) %} {% set target =
-              state_attr('climate.ac_study', 'temperature') | float(0) %} {% if
-              current > target + 1 %}red {% elif current < target - 1 %}blue {%
-              else %}green{% endif %}
-            features_position: bottom
+              {% set current = state_attr('climate.ac_study', 'current_temperature') | float(0) %}
+              {% set target = state_attr('climate.ac_study', 'temperature') | float(0) %}
+              {% if states('climate.ac_study') == 'off' %}grey
+              {% elif current > target + 1 %}red
+              {% elif current < target - 1 %}blue
+              {% else %}green{% endif %}
             tap_action:
               action: more-info
             entity: climate.ac_study
@@ -176,17 +176,17 @@ views:
           - type: custom:mushroom-template-card
             primary: Cinema
             secondary: >-
-              {{ state_attr('climate.ac_cinema', 'current_temperature') }}°C
-              (target {{ state_attr('climate.ac_cinema', 'temperature') }}°C) ·
-              Vent {{ states('sensor.ac_cinema_vent') }}%
-            icon: mdi:thermometer
+              {{ state_attr('climate.ac_cinema', 'current_temperature') }}°C → {{ state_attr('climate.ac_cinema', 'temperature') }}°C
+              · Vent {{ states('sensor.ac_cinema_vent') }}% · {{ 'Open' if states('climate.ac_cinema') != 'off' else 'Closed' }}
+            icon: >-
+              {{ 'mdi:hvac' if states('climate.ac_cinema') != 'off' else 'mdi:hvac-off' }}
             color: >-
-              {% set current = state_attr('climate.ac_cinema',
-              'current_temperature') | float(0) %} {% set target =
-              state_attr('climate.ac_cinema', 'temperature') | float(0) %} {% if
-              current > target + 1 %}red {% elif current < target - 1 %}blue {%
-              else %}green{% endif %}
-            features_position: bottom
+              {% set current = state_attr('climate.ac_cinema', 'current_temperature') | float(0) %}
+              {% set target = state_attr('climate.ac_cinema', 'temperature') | float(0) %}
+              {% if states('climate.ac_cinema') == 'off' %}grey
+              {% elif current > target + 1 %}red
+              {% elif current < target - 1 %}blue
+              {% else %}green{% endif %}
             tap_action:
               action: more-info
             entity: climate.ac_cinema

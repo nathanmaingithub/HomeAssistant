@@ -37,11 +37,11 @@ views:
       - type: custom:mushroom-template-card
         primary: Outside
         secondary: >-
-          {{ states('sensor.courtyardshellymotion2_temperature') }}°C
+          {{ states('sensor.shellymotion2_8cf681a1fcec_temperature') }}°C
         icon: mdi:home-thermometer-outline
         tap_action:
           action: more-info
-        entity: sensor.courtyardshellymotion2_temperature
+        entity: sensor.shellymotion2_8cf681a1fcec_temperature
 
       - type: grid
         columns: 2

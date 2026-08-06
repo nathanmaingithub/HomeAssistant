@@ -34,19 +34,162 @@ views:
         entity: climate.ac
         name: Main Unit
 
-      - type: markdown
-        title: Zone Summary
-        content: |
-          | Zone | Temp | Setpoint | State |
-          |------|------|----------|-------|
-          | Master | {{ state_attr('climate.ac_master_ens', 'current_temperature') }}°C | {{ state_attr('climate.ac_master_ens', 'temperature') }}°C | {{ states('climate.ac_master_ens') }} |
-          | Sasha | {{ state_attr('climate.ac_sasha', 'current_temperature') }}°C | {{ state_attr('climate.ac_sasha', 'temperature') }}°C | {{ states('climate.ac_sasha') }} |
-          | Elise | {{ state_attr('climate.ac_elise', 'current_temperature') }}°C | {{ state_attr('climate.ac_elise', 'temperature') }}°C | {{ states('climate.ac_elise') }} |
-          | Hugo | {{ state_attr('climate.ac_hugo', 'current_temperature') }}°C | {{ state_attr('climate.ac_hugo', 'temperature') }}°C | {{ states('climate.ac_hugo') }} |
-          | Rumpus | {{ state_attr('climate.ac_rumpus', 'current_temperature') }}°C | {{ state_attr('climate.ac_rumpus', 'temperature') }}°C | {{ states('climate.ac_rumpus') }} |
-          | Living | {{ state_attr('climate.ac_down_living', 'current_temperature') }}°C | {{ state_attr('climate.ac_down_living', 'temperature') }}°C | {{ states('climate.ac_down_living') }} |
-          | Study | {{ state_attr('climate.ac_study', 'current_temperature') }}°C | {{ state_attr('climate.ac_study', 'temperature') }}°C | {{ states('climate.ac_study') }} |
-          | Cinema | {{ state_attr('climate.ac_cinema', 'current_temperature') }}°C | {{ state_attr('climate.ac_cinema', 'temperature') }}°C | {{ states('climate.ac_cinema') }} |
+      - type: custom:mushroom-template-card
+        primary: Outside
+        secondary: >-
+          {{ states('sensor.courtyardshellymotion2_temperature') }}°C
+        icon: mdi:home-thermometer-outline
+        tap_action:
+          action: more-info
+        entity: sensor.courtyardshellymotion2_temperature
+
+      - type: grid
+        columns: 2
+        square: false
+        cards:
+          - type: custom:mushroom-template-card
+            primary: Hugo
+            secondary: >-
+              {{ state_attr('climate.ac_hugo', 'current_temperature') }}°C
+              (target {{ state_attr('climate.ac_hugo', 'temperature') }}°C) ·
+              Vent {{ states('sensor.ac_hugo_vent') }}%
+            icon: mdi:thermometer
+            color: >-
+              {% set current = state_attr('climate.ac_hugo',
+              'current_temperature') | float(0) %} {% set target =
+              state_attr('climate.ac_hugo', 'temperature') | float(0) %} {% if
+              current > target + 1 %}red {% elif current < target - 1 %}blue {%
+              else %}green{% endif %}
+            features_position: bottom
+            tap_action:
+              action: more-info
+            entity: climate.ac_hugo
+
+          - type: custom:mushroom-template-card
+            primary: Rumpus
+            secondary: >-
+              {{ state_attr('climate.ac_rumpus', 'current_temperature') }}°C
+              (target {{ state_attr('climate.ac_rumpus', 'temperature') }}°C) ·
+              Vent {{ states('sensor.ac_rumpus_vent') }}%
+            icon: mdi:thermometer
+            color: >-
+              {% set current = state_attr('climate.ac_rumpus',
+              'current_temperature') | float(0) %} {% set target =
+              state_attr('climate.ac_rumpus', 'temperature') | float(0) %} {%
+              if current > target + 1 %}red {% elif current < target - 1 %}blue
+              {% else %}green{% endif %}
+            features_position: bottom
+            tap_action:
+              action: more-info
+            entity: climate.ac_rumpus
+
+          - type: custom:mushroom-template-card
+            primary: Master
+            secondary: >-
+              {{ state_attr('climate.ac_master_ens', 'current_temperature') }}°C
+              (target {{ state_attr('climate.ac_master_ens', 'temperature') }}°C) ·
+              Vent {{ states('sensor.ac_master_ens_vent') }}%
+            icon: mdi:thermometer
+            color: >-
+              {% set current = state_attr('climate.ac_master_ens',
+              'current_temperature') | float(0) %} {% set target =
+              state_attr('climate.ac_master_ens', 'temperature') | float(0) %} {%
+              if current > target + 1 %}red {% elif current < target - 1 %}blue {%
+              else %}green{% endif %}
+            features_position: bottom
+            tap_action:
+              action: more-info
+            entity: climate.ac_master_ens
+
+          - type: custom:mushroom-template-card
+            primary: Sasha
+            secondary: >-
+              {{ state_attr('climate.ac_sasha', 'current_temperature') }}°C
+              (target {{ state_attr('climate.ac_sasha', 'temperature') }}°C) ·
+              Vent {{ states('sensor.ac_sasha_vent') }}%
+            icon: mdi:thermometer
+            color: >-
+              {% set current = state_attr('climate.ac_sasha',
+              'current_temperature') | float(0) %} {% set target =
+              state_attr('climate.ac_sasha', 'temperature') | float(0) %} {% if
+              current > target + 1 %}red {% elif current < target - 1 %}blue {%
+              else %}green{% endif %}
+            features_position: bottom
+            tap_action:
+              action: more-info
+            entity: climate.ac_sasha
+
+          - type: custom:mushroom-template-card
+            primary: Elise
+            secondary: >-
+              {{ state_attr('climate.ac_elise', 'current_temperature') }}°C
+              (target {{ state_attr('climate.ac_elise', 'temperature') }}°C) ·
+              Vent {{ states('sensor.ac_elise_vent') }}%
+            icon: mdi:thermometer
+            color: >-
+              {% set current = state_attr('climate.ac_elise',
+              'current_temperature') | float(0) %} {% set target =
+              state_attr('climate.ac_elise', 'temperature') | float(0) %} {% if
+              current > target + 1 %}red {% elif current < target - 1 %}blue {%
+              else %}green{% endif %}
+            features_position: bottom
+            tap_action:
+              action: more-info
+            entity: climate.ac_elise
+
+          - type: custom:mushroom-template-card
+            primary: Living
+            secondary: >-
+              {{ state_attr('climate.ac_down_living', 'current_temperature') }}°C
+              (target {{ state_attr('climate.ac_down_living', 'temperature') }}°C) ·
+              Vent {{ states('sensor.ac_down_living_vent') }}%
+            icon: mdi:thermometer
+            color: >-
+              {% set current = state_attr('climate.ac_down_living',
+              'current_temperature') | float(0) %} {% set target =
+              state_attr('climate.ac_down_living', 'temperature') | float(0) %} {%
+              if current > target + 1 %}red {% elif current < target - 1 %}blue {%
+              else %}green{% endif %}
+            features_position: bottom
+            tap_action:
+              action: more-info
+            entity: climate.ac_down_living
+
+          - type: custom:mushroom-template-card
+            primary: Study
+            secondary: >-
+              {{ state_attr('climate.ac_study', 'current_temperature') }}°C
+              (target {{ state_attr('climate.ac_study', 'temperature') }}°C) ·
+              Vent {{ states('sensor.ac_study_vent') }}%
+            icon: mdi:thermometer
+            color: >-
+              {% set current = state_attr('climate.ac_study',
+              'current_temperature') | float(0) %} {% set target =
+              state_attr('climate.ac_study', 'temperature') | float(0) %} {% if
+              current > target + 1 %}red {% elif current < target - 1 %}blue {%
+              else %}green{% endif %}
+            features_position: bottom
+            tap_action:
+              action: more-info
+            entity: climate.ac_study
+
+          - type: custom:mushroom-template-card
+            primary: Cinema
+            secondary: >-
+              {{ state_attr('climate.ac_cinema', 'current_temperature') }}°C
+              (target {{ state_attr('climate.ac_cinema', 'temperature') }}°C) ·
+              Vent {{ states('sensor.ac_cinema_vent') }}%
+            icon: mdi:thermometer
+            color: >-
+              {% set current = state_attr('climate.ac_cinema',
+              'current_temperature') | float(0) %} {% set target =
+              state_attr('climate.ac_cinema', 'temperature') | float(0) %} {% if
+              current > target + 1 %}red {% elif current < target - 1 %}blue {%
+              else %}green{% endif %}
+            features_position: bottom
+            tap_action:
+              action: more-info
+            entity: climate.ac_cinema
 
       - type: entities
         title: Schedule Automations
@@ -64,3 +207,16 @@ views:
             name: Reopen Cooled Zones
           - entity: automation.myair_minimum_zones_warning
             name: Minimum Zones Warning
+
+      - type: logbook
+        title: Recent HVAC Activity
+        hours_to_show: 48
+        entities:
+          - automation.myair_morning_day_profile
+          - automation.myair_afternoon_reapply_day_profile
+          - automation.myair_night_sleep_profile
+          - automation.myair_prevent_upstairs_overheating
+          - automation.myair_reopen_cooled_upstairs_zones
+          - automation.myair_minimum_zones_warning
+          - script.myair_day_profile
+          - script.myair_night_profile
